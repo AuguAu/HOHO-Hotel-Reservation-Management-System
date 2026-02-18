@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
- 
+
 export default function Home() {
   const router = useRouter();
   const [admin, setAdmin] = useState(null);
@@ -15,14 +15,16 @@ export default function Home() {
   const [filterFloor, setFilterFloor] = useState('');
   const [filterType, setFilterType] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
- 
+
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [bookingData, setBookingData] = useState({ customerName: '', idCard: '', phone: '', checkIn: '', checkOut: '' });
   const [currentBooking, setCurrentBooking] = useState(null);
- 
-  // 1. Check login as soon as the page is opened
+
+  // Get Today's date in YYYY-MM-DD format for input restriction
+  const today = new Date().toISOString().split('T')[0];
+
   useEffect(() => {
     const user = localStorage.getItem('hoho_admin');
     if (!user) {
@@ -33,34 +35,33 @@ export default function Home() {
       fetchData();
     }
   }, [router]);
- 
+
   const fetchData = async () => {
     try {
       const resRooms = await fetch('/api/rooms');
       const dataRooms = await resRooms.json();
       if (dataRooms.success) setRooms(dataRooms.data.sort((a, b) => a.roomNumber.localeCompare(b.roomNumber)));
- 
+
       const resBookings = await fetch('/api/bookings');
       const dataBookings = await resBookings.json();
       if (dataBookings.success) {
-        // Find only people who are staying currently (Active)
         setActiveBookings(dataBookings.data.filter(b => b.status === 'Active'));
       }
     } catch (err) { console.error(err); }
+    setLoading(false);
   };
- 
-  // 2. Call API to clean up the data we just created
+
   const generate75Rooms = async () => {
-    if(!confirm("SYSTEM OVERRIDE: Wipe all old data and create 75 new rooms. Are you sure?")) return;
+    if(!confirm("SYSTEM OVERRIDE: All data will be erased and 75 rooms will be generated. Confirm?")) return;
     setLoading(true);
     const res = await fetch('/api/reset', { method: 'POST' });
     if ((await res.json()).success) {
-      alert("The system has been successfully reset!");
+      alert("System has been successfully reset!");
       fetchData();
     }
     setLoading(false);
   };
- 
+
   const handleRoomClick = (room) => {
     setSelectedRoom(room);
     setIsModalOpen(true);
@@ -68,7 +69,6 @@ export default function Home() {
     setBookingData({ customerName: '', idCard: '', phone: '', checkIn: '', checkOut: '' });
     
     if (room.status === 'Occupied') {
-      // Pull up information on current guests for display (compare room IDs)
       const booking = activeBookings.find(b => b.roomID?._id === room._id);
       setCurrentBooking(booking || null);
       if (booking) {
@@ -78,9 +78,18 @@ export default function Home() {
       setCurrentBooking(null);
     }
   };
- 
+
   const handleBookingSubmit = async (e) => {
     e.preventDefault();
+    
+    // Date Validations
+    if (bookingData.checkIn < today && !isEditing) {
+      return alert("Error: Check-in date cannot be in the past.");
+    }
+    if (bookingData.checkOut <= bookingData.checkIn) {
+      return alert("Error: Check-out date must be after Check-in date.");
+    }
+
     if (currentBooking && isEditing) {
       const res = await fetch(`/api/bookings/${currentBooking._id}`, {
         method: 'PUT',
@@ -88,7 +97,7 @@ export default function Home() {
         body: JSON.stringify({ action: 'edit', ...bookingData }),
       });
       if ((await res.json()).success) {
-        alert("Data updated successfully!");
+        alert("Guest information updated successfully!");
         setIsModalOpen(false);
         fetchData();
       }
@@ -99,16 +108,16 @@ export default function Home() {
         body: JSON.stringify({ ...bookingData, roomID: selectedRoom._id }),
       });
       if ((await res.json()).success) {
-        alert("Check-in was successful!");
+        alert("Check-in successfully!");
         setIsModalOpen(false);
         fetchData();
       }
     }
   };
- 
+
   const handleCheckout = async () => {
     if(!currentBooking) return;
-    if(!confirm(`Confirm Check Out for Room ${selectedRoom.roomNumber}?`)) return;
+    if(!confirm(`Are you sure you want to check out Room ${selectedRoom.roomNumber}?`)) return;
     
     const res = await fetch(`/api/bookings/${currentBooking._id}`, {
       method: 'PUT',
@@ -117,12 +126,12 @@ export default function Home() {
     });
     
     if ((await res.json()).success) {
-      alert(`Room ${selectedRoom.roomNumber} Checked Out successfully!`);
+      alert(`Room ${selectedRoom.roomNumber} has been checked out successfully!`);
       setIsModalOpen(false);
-      fetchData();
+      fetchData(); 
     }
   };
- 
+
   const filteredRooms = rooms.filter(r => {
     const booking = activeBookings.find(b => b.roomID?._id === r._id);
     const searchStr = search.toLowerCase();
@@ -132,34 +141,34 @@ export default function Home() {
     const matchStatus = filterStatus ? r.status === filterStatus : true;
     return matchSearch && matchFloor && matchType && matchStatus;
   });
- 
+
   if (authChecking || !admin) return <div className="min-h-screen bg-[#FFF0F0] flex items-center justify-center font-bold text-red-500">Checking Authorization...</div>;
- 
+
   return (
     <div className="min-h-screen font-sans pb-10 bg-[#FFF0F0] relative">
       <nav className="bg-white/90 backdrop-blur-md border-b border-red-100 sticky top-0 z-40 shadow-sm px-6 py-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <div className="bg-red-600 p-2 rounded-xl text-white font-bold text-xl flex items-center justify-center">
-            <span className="text-sm">LOGO</span>
+          <div className="bg-red-600 w-10 h-10 rounded-xl text-white font-black text-xl flex items-center justify-center shadow-md">
+            H
           </div>
           <span className="text-2xl font-black text-red-700 tracking-tighter">hoho.</span>
         </div>
-        <div className="flex items-center gap-4">
-          <Link href="/admin/dashboard" className="text-red-600 font-bold hover:bg-red-50 px-4 py-2 rounded-lg transition-colors">
-            History & Dashboard
-          </Link>
+        <div className="flex items-center gap-4 text-sm font-bold">
+          <Link href="/admin/dashboard" className="text-slate-500 hover:text-red-600 transition-colors">Dashboard</Link>
+          <Link href="/admin/history" className="text-slate-500 hover:text-red-600 transition-colors">History Log</Link>
+          <div className="w-px h-5 bg-slate-200 mx-1"></div>
           <div className="flex items-center gap-2 bg-red-50 px-3 py-1.5 rounded-full border border-red-100">
-             <span className="text-xs font-bold text-red-800">Admin</span>
+             <span className="text-xs font-bold text-red-800">{admin.username}</span>
              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
           </div>
         </div>
       </nav>
- 
+
       <main className="max-w-7xl mx-auto p-6 mt-4">
         <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-red-50 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
           <div>
-            <h1 className="text-2xl font-black text-slate-800">Front Desk</h1>
-            <p className="text-red-500 font-medium text-xs mt-1">Manage check-ins and room status</p>
+            <h1 className="text-2xl font-black text-slate-800">Reception Desk</h1>
+            <p className="text-red-500 font-medium text-xs mt-1">Guest check-ins and property management</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <input type="text" placeholder="🔍 Search Room or Guest..." className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-sm outline-red-400 w-48" value={search} onChange={e => setSearch(e.target.value)} />
@@ -180,7 +189,7 @@ export default function Home() {
             </select>
           </div>
         </div>
- 
+
         <div className="space-y-6">
           {[5, 4, 3, 2, 1].map(floor => {
             const floorRooms = filteredRooms.filter(r => r.floor === floor);
@@ -192,7 +201,7 @@ export default function Home() {
                 </h3>
                 <div className="grid grid-cols-5 md:grid-cols-10 lg:grid-cols-15 gap-3">
                   {floorRooms.map(room => (
-                    <div
+                    <div 
                       key={room._id} onClick={() => handleRoomClick(room)}
                       className={`cursor-pointer h-20 rounded-2xl flex flex-col items-center justify-center gap-1 transition-all hover:scale-105 shadow-sm border-2 relative overflow-hidden
                         ${room.status === 'Available' ? 'bg-emerald-50 border-emerald-100 text-emerald-700' : 'bg-red-50 border-red-100 text-red-700'}
@@ -209,7 +218,7 @@ export default function Home() {
           })}
         </div>
       </main>
- 
+
       {isModalOpen && selectedRoom && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl">
@@ -221,7 +230,7 @@ export default function Home() {
               </div>
               <button onClick={() => setIsModalOpen(false)} className="bg-black/10 hover:bg-black/20 w-8 h-8 rounded-full flex items-center justify-center transition-colors">✕</button>
             </div>
- 
+
             <div className="p-8">
               {selectedRoom.status === 'Available' || isEditing ? (
                 <form onSubmit={handleBookingSubmit} className="space-y-4">
@@ -233,22 +242,22 @@ export default function Home() {
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">ID Card / Passport</label>
-                        <input type="text" required className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none text-sm" value={bookingData.idCard} onChange={e => setBookingData({...bookingData, idCard: e.target.value})} />
+                        <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">ID / Passport</label>
+                        <input type="text" maxLength={20} required className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none text-sm" value={bookingData.idCard} onChange={e => setBookingData({...bookingData, idCard: e.target.value})} />
                       </div>
                       <div>
                         <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Phone Number</label>
-                        <input type="text" required className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none text-sm" value={bookingData.phone} onChange={e => setBookingData({...bookingData, phone: e.target.value})} />
+                        <input type="text" maxLength={20} required className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none text-sm" value={bookingData.phone} onChange={e => setBookingData({...bookingData, phone: e.target.value})} />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Check-in Date</label>
-                        <input type="date" required className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none text-sm" value={bookingData.checkIn} onChange={e => setBookingData({...bookingData, checkIn: e.target.value})} />
+                        <input type="date" min={today} required className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none text-sm" value={bookingData.checkIn} onChange={e => setBookingData({...bookingData, checkIn: e.target.value})} />
                       </div>
                       <div>
                         <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Check-out Date</label>
-                        <input type="date" required className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none text-sm" value={bookingData.checkOut} onChange={e => setBookingData({...bookingData, checkOut: e.target.value})} />
+                        <input type="date" min={today} required className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none text-sm" value={bookingData.checkOut} onChange={e => setBookingData({...bookingData, checkOut: e.target.value})} />
                       </div>
                     </div>
                   </div>
@@ -283,7 +292,7 @@ export default function Home() {
           </div>
         </div>
       )}
- 
+
       <div onClick={generate75Rooms} className="fixed bottom-2 right-2 opacity-10 hover:opacity-100 cursor-pointer p-2 transition-opacity z-50">
         <span className="text-xs">⚙️</span>
       </div>
