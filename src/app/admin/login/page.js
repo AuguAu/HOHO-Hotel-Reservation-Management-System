@@ -7,9 +7,10 @@ export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
- const handleLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     
+    // api check db
     const res = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -19,6 +20,7 @@ export default function LoginPage() {
     const data = await res.json();
 
     if (data.success) {
+      // save data to local storage
       localStorage.setItem('hoho_admin', JSON.stringify({ 
         ...data.data,
         profile: `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.data.username}`
@@ -29,14 +31,26 @@ export default function LoginPage() {
     }
   };
 
+  // emergency reset function
+  const handleEmergencyReset = async () => {
+    if(!confirm("EMERGENCY OVERRIDE: ล้างข้อมูลเก่าและสร้างบัญชี Admin ยืนยันไหม?")) return;
+    
+    const res = await fetch('/api/reset', { method: 'POST' });
+    if ((await res.json()).success) {
+      alert("✅ ฐานข้อมูลถูกรีเซ็ตเรียบร้อยแล้ว!\n\nตอนนี้คุณสามารถล็อคอินด้วย:\nUsername: manager\nPassword: manager_pwd");
+    } else {
+      alert("❌ เกิดข้อผิดพลาดในการรีเซ็ต");
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-[#FFF0F0] flex flex-col items-center justify-center p-4 font-sans">      
+    <div className="min-h-screen bg-[#FFF0F0] flex flex-col items-center justify-center p-4 font-sans relative">
       <div className="bg-white p-10 rounded-[2.5rem] shadow-xl shadow-red-100/50 w-full max-w-md text-center border border-red-50">
-        <div className="bg-red-600 w-16 h-16 rounded-2xl flex items-center justify-center text-white text-3xl mx-auto mb-4 shadow-lg shadow-red-200">
-          🏨
+        <div className="bg-red-600 w-16 h-16 rounded-2xl flex items-center justify-center text-white text-3xl font-black mx-auto mb-4 shadow-lg shadow-red-200">
+          H
         </div>
-        <h1 className="text-3xl font-black text-red-700 mb-2">hoho. Admin</h1>
-        <p className="text-slate-400 font-medium mb-8 text-sm">Please sign in to access the dashboard</p>
+        <h1 className="text-3xl font-black text-red-700 mb-2">HOHO</h1>
+        <p className="text-slate-400 font-medium mb-8 text-sm">Please sign in to access the system</p>
 
         <form onSubmit={handleLogin} className="space-y-4 text-left">
           <div>
@@ -59,6 +73,11 @@ export default function LoginPage() {
             Sign In
           </button>
         </form>
+      </div>
+
+      {/* emergency reset button */}
+      <div onClick={handleEmergencyReset} className="fixed bottom-2 right-2 opacity-20 hover:opacity-100 cursor-pointer p-2 transition-opacity z-50">
+        <span className="text-2xl">⚙️</span>
       </div>
     </div>
   );
