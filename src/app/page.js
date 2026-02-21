@@ -62,6 +62,11 @@ export default function Home() {
     setLoading(false);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('hoho_admin');
+    router.push('/admin/login');
+  };
+
   const handleRoomClick = (room) => {
     setSelectedRoom(room);
     setIsModalOpen(true);
@@ -158,9 +163,11 @@ export default function Home() {
           <Link href="/admin/history" className="text-slate-500 hover:text-red-600 transition-colors">History Log</Link>
           <div className="w-px h-5 bg-slate-200 mx-1"></div>
           <div className="flex items-center gap-2 bg-red-50 px-3 py-1.5 rounded-full border border-red-100">
-             <span className="text-xs font-bold text-red-800">{admin.username}</span>
-             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span className="text-xs font-bold text-red-800">{admin.name} ({admin.role})</span>	
           </div>
+          <button onClick={handleLogout} className="bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-slate-800 transition-colors">
+            Logout
+          </button>
         </div>
       </nav>
 
