@@ -51,15 +51,28 @@ export default function StaffPage() {
 
   return (
     <div className="min-h-screen bg-[#FFF0F0] font-sans pb-12">
-      <nav className="bg-white/90 backdrop-blur-md border-b border-red-100 sticky top-0 z-40 px-6 py-4 flex justify-between items-center shadow-sm">
+      <nav className="bg-white/90 backdrop-blur-md border-b border-red-100 sticky top-0 z-40 shadow-sm px-6 py-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
-          <Link href="/" className="text-xl font-black text-slate-800 hover:text-red-600 transition-colors">← Home</Link>
-          <span className="w-px h-6 bg-slate-200"></span>
-          <span className="text-xl font-black text-red-700">hoho. Staff Management</span>
+          <Link href="/" className="bg-red-600 w-10 h-10 rounded-xl text-white font-black text-xl flex items-center justify-center shadow-md">
+            H
+          </Link>
+          <Link href="/" className="text-2xl font-black text-red-700 tracking-tighter">hoho.</Link>
         </div>
         <div className="flex items-center gap-4 text-sm font-bold">
-          <span className="bg-red-50 text-red-800 px-3 py-1.5 rounded-full border border-red-100">{admin.name} ({admin.role})</span>
-          <button onClick={handleLogout} className="bg-slate-900 text-white px-4 py-2.5 rounded-xl hover:bg-slate-800 transition-colors">Logout</button>
+          <Link href="/" className="text-slate-500 hover:text-red-600 transition-colors">Room Available</Link>
+          <Link href="/admin/dashboard" className="text-slate-500 hover:text-red-600 transition-colors">Dashboard</Link>
+          <Link href="/admin/history" className="text-slate-500 hover:text-red-600 transition-colors">History Log</Link>
+          {admin.role === 'Manager' && <Link href="/admin/staff" className="text-slate-500 hover:text-red-600 transition-colors">Manage Staff</Link>}
+
+          <div className="w-px h-5 bg-slate-200 mx-1"></div>
+          
+          <div className="flex items-center gap-2 bg-red-50 px-3 py-1.5 rounded-full border border-red-100">
+             <span className="text-xs font-bold text-red-800">{admin.name} ({admin.role})</span>
+             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+          </div>
+          <button onClick={() => { localStorage.removeItem('hoho_admin'); router.push('/admin/login'); }} className="bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-slate-800 transition-colors">
+            Logout
+          </button>
         </div>
       </nav>
 
