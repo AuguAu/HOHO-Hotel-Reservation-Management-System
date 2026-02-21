@@ -7,17 +7,25 @@ export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (e) => {
+ const handleLogin = async (e) => {
     e.preventDefault();
-    if (username === 'admin' && password === '1234') {
+    
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    
+    const data = await res.json();
+
+    if (data.success) {
       localStorage.setItem('hoho_admin', JSON.stringify({ 
-        username: 'Admin', 
-        role: 'Admin',
-        profile: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
+        ...data.data,
+        profile: `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.data.username}`
       }));
       router.push('/'); 
     } else {
-      alert('Invalid credentials. Please use admin / 1234');
+      alert('Login Failed: ' + data.error);
     }
   };
 
