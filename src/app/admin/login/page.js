@@ -1,7 +1,6 @@
 "use client";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -11,21 +10,19 @@ export default function LoginPage() {
   const handleLogin = (e) => {
     e.preventDefault();
     if (username === 'admin' && password === '1234') {
-      // remember login into local
       localStorage.setItem('hoho_admin', JSON.stringify({ 
         username: 'Admin', 
         role: 'Admin',
-        profile: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kusol'
+        profile: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin'
       }));
-      router.push('/'); // go to first page
+      router.push('/'); 
     } else {
       alert('Invalid credentials. Please use admin / 1234');
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF0F0] flex flex-col items-center justify-center p-4 font-sans">
-      
+    <div className="min-h-screen bg-[#FFF0F0] flex flex-col items-center justify-center p-4 font-sans">      
       <div className="bg-white p-10 rounded-[2.5rem] shadow-xl shadow-red-100/50 w-full max-w-md text-center border border-red-50">
         <div className="bg-red-600 w-16 h-16 rounded-2xl flex items-center justify-center text-white text-3xl mx-auto mb-4 shadow-lg shadow-red-200">
           🏨
@@ -38,7 +35,7 @@ export default function LoginPage() {
             <label className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Username</label>
             <input 
               type="text" 
-              className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl outline-none focus:border-red-500 transition-colors mt-1"
+              className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl outline-none focus:border-red-500 transition-colors mt-1 text-sm font-bold"
               value={username} onChange={(e) => setUsername(e.target.value)} required
             />
           </div>
@@ -46,7 +43,7 @@ export default function LoginPage() {
             <label className="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Password</label>
             <input 
               type="password" 
-              className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl outline-none focus:border-red-500 transition-colors mt-1"
+              className="w-full bg-slate-50 border border-slate-100 p-4 rounded-2xl outline-none focus:border-red-500 transition-colors mt-1 text-sm font-bold"
               value={password} onChange={(e) => setPassword(e.target.value)} required
             />
           </div>
