@@ -156,7 +156,7 @@ export default function Home() {
           <Link href="/" className="bg-red-600 w-10 h-10 rounded-xl text-white font-black text-xl flex items-center justify-center shadow-md">
             H
           </Link>
-          <Link href="/" className="text-2xl font-black text-red-700 tracking-tighter">hoho.</Link>
+          <Link href="/" className="text-2xl font-black text-red-700 tracking-tighter">HOHO</Link>
         </div>
         <div className="flex items-center gap-4 text-sm font-bold">
           <Link href="/" className="text-slate-500 hover:text-red-600 transition-colors">Room Available</Link>
@@ -179,8 +179,8 @@ export default function Home() {
       <main className="max-w-7xl mx-auto p-6 mt-4">
         <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-red-50 mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
           <div>
-            <h1 className="text-2xl font-black text-slate-800">Reception Desk</h1>
-            <p className="text-red-500 font-medium text-xs mt-1">Guest check-ins and property management</p>
+            <h1 className="text-2xl font-black text-slate-800">Room Available</h1>
+            <p className="text-red-500 font-medium text-xs mt-1">Check room availability and Check-in / Check-out guest</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <input type="text" placeholder="🔍 Search Room or Guest..." className="bg-slate-50 border border-slate-200 p-2.5 rounded-xl text-sm outline-red-400 w-48" value={search} onChange={e => setSearch(e.target.value)} />

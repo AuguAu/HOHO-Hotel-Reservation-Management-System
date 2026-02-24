@@ -41,7 +41,7 @@ export default function HistoryPage() {
           <Link href="/" className="bg-red-600 w-10 h-10 rounded-xl text-white font-black text-xl flex items-center justify-center shadow-md">
             H
           </Link>
-          <Link href="/" className="text-2xl font-black text-red-700 tracking-tighter">hoho.</Link>
+          <Link href="/" className="text-2xl font-black text-red-700 tracking-tighter">HOHO</Link>
         </div>
         <div className="flex items-center gap-4 text-sm font-bold">
           <Link href="/" className="text-slate-500 hover:text-red-600 transition-colors">Room Available</Link>
