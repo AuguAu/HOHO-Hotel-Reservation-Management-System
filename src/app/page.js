@@ -51,16 +51,16 @@ export default function Home() {
     setLoading(false);
   };
 
-  const generate75Rooms = async () => {
-    if(!confirm("SYSTEM OVERRIDE: All data will be erased and 75 rooms will be generated. Confirm?")) return;
-    setLoading(true);
-    const res = await fetch('/api/reset', { method: 'POST' });
-    if ((await res.json()).success) {
-      alert("System has been successfully reset!");
-      fetchData();
-    }
-    setLoading(false);
-  };
+  //const generate75Rooms = async () => {
+    // if(!confirm("SYSTEM OVERRIDE: All data will be erased and 75 rooms will be generated. Confirm?")) return;
+    // setLoading(true);
+    // const res = await fetch('/api/reset', { method: 'POST' });
+    // if ((await res.json()).success) {
+    //   alert("System has been successfully reset!");
+    //   fetchData();
+    // }
+    // setLoading(false);
+  //};
 
   const handleLogout = () => {
     localStorage.removeItem('hoho_admin');
@@ -147,10 +147,10 @@ export default function Home() {
     return matchSearch && matchFloor && matchType && matchStatus;
   });
 
-  if (authChecking || !admin) return <div className="min-h-screen bg-[#FFF0F0] flex items-center justify-center font-bold text-red-500">Checking Authorization...</div>;
+  if (authChecking || !admin) return <div className="min-h-screen flex items-center justify-center font-bold text-red-500">Checking Authorization...</div>;
 
   return (
-    <div className="min-h-screen font-sans pb-10 bg-[#FFF0F0] relative">
+    <div className="min-h-screen font-sans pb-10 relative">
       <nav className="bg-white/90 backdrop-blur-md border-b border-red-100 sticky top-0 z-40 shadow-sm px-6 py-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <Link href="/" className="bg-red-600 w-10 h-10 rounded-xl text-white font-black text-xl flex items-center justify-center shadow-md">
@@ -305,9 +305,9 @@ export default function Home() {
         </div>
       )}
 
-      <div onClick={generate75Rooms} className="fixed bottom-2 right-2 opacity-10 hover:opacity-100 cursor-pointer p-2 transition-opacity z-50">
+      {/* <div onClick={generate75Rooms} className="fixed bottom-2 right-2 opacity-10 hover:opacity-100 cursor-pointer p-2 transition-opacity z-50">
         <span className="text-xs">⚙️</span>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+/* import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Room from '@/models/Room';
 import Booking from '@/models/Booking';
@@ -34,4 +34,4 @@ export async function POST() {
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
-}
+}*/
