@@ -110,7 +110,7 @@ export default function Home() {
       const res = await fetch('/api/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...bookingData, roomID: selectedRoom._id }),
+        body: JSON.stringify({ ...bookingData, roomID: selectedRoom._id, checkInBy: admin.name }),
       });
       if ((await res.json()).success) {
         alert("Check-in successfully!");
@@ -127,7 +127,7 @@ export default function Home() {
     const res = await fetch(`/api/bookings/${currentBooking._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'checkout', roomID: selectedRoom._id })
+      body: JSON.stringify({ action: 'checkout', roomID: selectedRoom._id, checkOutBy: admin.name })
     });
     
     if ((await res.json()).success) {
