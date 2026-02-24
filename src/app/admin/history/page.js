@@ -98,10 +98,12 @@ export default function HistoryPage() {
                     </td>
                     <td className="py-4 text-sm font-black text-indigo-600">{b.roomID?.roomNumber || 'N/A'}</td>
                     <td className="py-4 text-xs font-medium text-slate-500">
-                      {b.actualCheckInTime ? new Date(b.actualCheckInTime).toLocaleString('en-US') : 'N/A'}
+                      <div>{b.actualCheckInTime ? new Date(b.actualCheckInTime).toLocaleString('en-US') : 'N/A'}</div>
+                      {b.checkInBy && <div className="text-[9px] text-amber-600 font-bold mt-1 uppercase">BY: {b.checkInBy}</div>}
                     </td>
                     <td className="py-4 text-xs font-medium text-slate-500">
-                      {b.actualCheckOutTime ? new Date(b.actualCheckOutTime).toLocaleString('en-US') : '-'}
+                      <div>{b.actualCheckOutTime ? new Date(b.actualCheckOutTime).toLocaleString('en-US') : '-'}</div>
+                      {b.checkOutBy && <div className="text-[9px] text-red-600 font-bold mt-1 uppercase">BY: {b.checkOutBy}</div>}
                     </td>
                     <td className="py-4 text-right">
                       <span className={`font-bold text-[10px] px-3 py-1.5 rounded-full uppercase tracking-widest ${
