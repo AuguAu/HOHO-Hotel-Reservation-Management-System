@@ -50,10 +50,10 @@ export default function DashboardPage() {
     router.push('/');
   };
 
-  if (!admin) return <div className="min-h-screen bg-[#FFF0F0]"></div>;
+  if (!admin) return <div className="min-h-screen"></div>;
 
   return (
-    <div className="min-h-screen bg-[#FFF0F0] font-sans pb-12">
+    <div className="min-h-screen font-sans pb-12">
       <nav className="bg-white/90 backdrop-blur-md border-b border-red-100 sticky top-0 z-40 shadow-sm px-6 py-4 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <Link href="/" className="bg-red-600 w-10 h-10 rounded-xl text-white font-black text-xl flex items-center justify-center shadow-md">

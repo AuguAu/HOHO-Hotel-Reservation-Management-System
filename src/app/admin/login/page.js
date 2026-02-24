@@ -31,20 +31,19 @@ export default function LoginPage() {
     }
   };
 
-  // emergency reset function
-  const handleEmergencyReset = async () => {
-    if(!confirm("EMERGENCY OVERRIDE: Clear all data and create default Admin accounts. Proceed?")) return;
+  //const handleEmergencyReset = async () => {
+    //if(!confirm("EMERGENCY OVERRIDE: Clear all data and create default Admin accounts. Proceed?")) return;
     
-    const res = await fetch('/api/reset', { method: 'POST' });
-    if ((await res.json()).success) {
-      alert("Database reset successfully!\n\nYou can now login with:\nUsername: manager\nPassword: manager_pwd");
-    } else {
-      alert("Error resetting database");
-    }
-  };
+    //const res = await fetch('/api/reset', { method: 'POST' });
+    //if ((await res.json()).success) {
+      //alert("Database reset successfully!\n\nYou can now login with:\nUsername: manager\nPassword: manager_pwd");
+    //} else {
+      //alert("Error resetting database");
+    //}
+  //};
 
   return (
-    <div className="min-h-screen bg-[#FFF0F0] flex flex-col items-center justify-center p-4 font-sans relative">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 font-sans relative">
       <div className="bg-white p-10 rounded-[2.5rem] shadow-xl shadow-red-100/50 w-full max-w-md text-center border border-red-50">
         <div className="bg-red-600 w-16 h-16 rounded-2xl flex items-center justify-center text-white text-3xl font-black mx-auto mb-4 shadow-lg shadow-red-200">
           H
@@ -75,10 +74,9 @@ export default function LoginPage() {
         </form>
       </div>
 
-      {/* emergency reset button */}
-      <div onClick={handleEmergencyReset} className="fixed bottom-2 right-2 opacity-20 hover:opacity-100 cursor-pointer p-2 transition-opacity z-50">
+      {/* <div onClick={handleEmergencyReset} className="fixed bottom-2 right-2 opacity-20 hover:opacity-100 cursor-pointer p-2 transition-opacity z-50">
         <span className="text-2xl">⚙️</span>
-      </div>
+      </div> */}
     </div>
   );
 }
