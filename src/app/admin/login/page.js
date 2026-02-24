@@ -33,13 +33,13 @@ export default function LoginPage() {
 
   // emergency reset function
   const handleEmergencyReset = async () => {
-    if(!confirm("EMERGENCY OVERRIDE: ล้างข้อมูลเก่าและสร้างบัญชี Admin ยืนยันไหม?")) return;
+    if(!confirm("EMERGENCY OVERRIDE: Clear all data and create default Admin accounts. Proceed?")) return;
     
     const res = await fetch('/api/reset', { method: 'POST' });
     if ((await res.json()).success) {
-      alert("✅ ฐานข้อมูลถูกรีเซ็ตเรียบร้อยแล้ว!\n\nตอนนี้คุณสามารถล็อคอินด้วย:\nUsername: manager\nPassword: manager_pwd");
+      alert("Database reset successfully!\n\nYou can now login with:\nUsername: manager\nPassword: manager_pwd");
     } else {
-      alert("❌ เกิดข้อผิดพลาดในการรีเซ็ต");
+      alert("Error resetting database");
     }
   };
 
