@@ -13,6 +13,7 @@ export default function StaffPage() {
   const [editId, setEditId] = useState(null);
 
   useEffect(() => {
+    document.title = "hoho | Manage Staff";
     const user = JSON.parse(localStorage.getItem('hoho_admin'));
     if (!user || user.role !== 'Manager') {
       alert("Access Denied: Only Managers can access this page.");
@@ -64,7 +65,7 @@ export default function StaffPage() {
 
   const handleLogout = () => {
     localStorage.removeItem('hoho_admin');
-    router.push('/admin/login');
+    router.push('/login');
   };
 
   if (!admin) return <div className="min-h-screen"></div>;
@@ -76,7 +77,7 @@ export default function StaffPage() {
           <Link href="/" className="bg-red-600 w-10 h-10 rounded-xl text-white font-black text-xl flex items-center justify-center shadow-md">
             H
           </Link>
-          <Link href="/" className="text-2xl font-black text-red-700 tracking-tighter">HOHO</Link>
+          <Link href="/" className="text-2xl font-black text-red-700 tracking-tighter">hoho</Link>
         </div>
         <div className="flex items-center gap-4 text-sm font-bold">
           <Link href="/" className="text-slate-500 hover:text-red-600 transition-colors">Room Available</Link>
@@ -90,7 +91,7 @@ export default function StaffPage() {
              <span className="text-xs font-bold text-red-800">{admin.name} ({admin.role})</span>
              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
           </div>
-          <button onClick={() => { localStorage.removeItem('hoho_admin'); router.push('/admin/login'); }} className="bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-slate-800 transition-colors">
+          <button onClick={() => { localStorage.removeItem('hoho_admin'); router.push('/login'); }} className="bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-slate-800 transition-colors">
             Logout
           </button>
         </div>

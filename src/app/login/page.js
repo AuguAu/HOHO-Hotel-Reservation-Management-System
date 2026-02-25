@@ -1,11 +1,15 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    document.title = "hoho | Login";
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -48,7 +52,7 @@ export default function LoginPage() {
         <div className="bg-red-600 w-16 h-16 rounded-2xl flex items-center justify-center text-white text-3xl font-black mx-auto mb-4 shadow-lg shadow-red-200">
           H
         </div>
-        <h1 className="text-3xl font-black text-red-700 mb-2">HOHO</h1>
+        <h1 className="text-3xl font-black text-red-700 mb-2">hoho</h1>
         <p className="text-slate-400 font-medium mb-8 text-sm">Please sign in to access the system</p>
 
         <form onSubmit={handleLogin} className="space-y-4 text-left">
