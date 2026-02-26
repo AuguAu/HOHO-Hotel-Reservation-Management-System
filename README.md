@@ -45,7 +45,7 @@ Developed as a specialized solution for mid-sized hotels, **hoho** manages 75 ro
 
 ![History Log](./screenshots/history.png)
 
-### Staff Management page
+### Staff Management page (Only Manager role can access)
 
 ![Staff Management](./screenshots/staff.png)
 
