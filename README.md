@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# hoho | Hotel Management System
 
-## Getting Started
+**hoho** is a comprehensive hotel front-desk and reservation platform designed to streamline property operations. Built with a modern tech stack, it provides real-time visibility into room status, secure guest registration, and administrative oversight.
 
-First, run the development server:
+## Team Members
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Kusol Mahasinananda** : ([GitHub](https://github.com/AuguAu))
+- **Siah Wen Bin** : ([GitHub](https://github.com/Prohere7321))
+- **Chanyuphyea Lorn** : ([GitHub](https://github.com/yuphyealorn-ops))
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Description
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Developed as a specialized solution for mid-sized hotels, **hoho** manages 75 rooms across 5 floors. The system is built on a 3-entity architecture (Rooms, Bookings, and Staff Users) to ensure seamless data flow and high accountability.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Key Features
 
-## Learn More
+- **Real-time Reception Desk:** Interactive grid showing Available/Occupied status for 75 rooms.
+- **Role-Based Access Control (RBAC):** Distinct interfaces for **Managers** (full access) and **Receptionists** (front-desk operations).
+- **Staff Accountability Log:** A transparent history log that tracks every transaction with the specific staff member's name.
+- **Analytics Dashboard:** Visualized occupancy rates, room popularity (Pie Chart), and guest length-of-stay (Bar Chart).
+- **Security & Integrity:** Strict input validation (20-digit limits) and date-logic checks to prevent invalid reservations.
 
-To learn more about Next.js, take a look at the following resources:
+## Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Framework:** Next.js 15
+- **Database:** MongoDB Atlas (Mongoose ODM)
+- **Styling:** Tailwind CSS v4
+- **Visualization:** Recharts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Screenshots
 
-## Deploy on Vercel
+### Login page
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![Login Page](./screenshots/login.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Room Available page
+
+![Room Available](./screenshots/room.png)
+
+### Dashboard page
+
+![Dashboard](./screenshots/dashboard.png)
+
+### History Log page
+
+![History Log](./screenshots/history.png)
+
+### Staff Management page
+
+![Staff Management](./screenshots/staff.png)
+
+## Live Demo
+
+[Click here to view App](https://hohohotel.eastasia.cloudapp.azure.com)
+
+### Login Credentials
+
+| Role         | Username | Password    |
+| ------------ | -------- | ----------- |
+| Manager      | manager  | manager_pwd |
+| Receptionist | staff_1  | staff_1_pwd |
+
+## Note
+
+** This application is developed for only academic purposes at VMES @ AU (ITX4107_Project2) **
